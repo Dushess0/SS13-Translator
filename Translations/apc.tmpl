@@ -1,195 +1,1088 @@
-<div class='notice'>
-	{{if data.siliconUser}}
-		<div class="itemContentSmall">
-			Панель управления:
-		</div>
-		<div class="itemContentFull">
-			{{:helper.link('Заблокирована', 'locked', {'toggleaccess' : 1}, data.locked ? 'selected' : null)}}{{:helper.link('Разблокирована', 'unlocked', {'toggleaccess' : 1}, data.malfStatus >= 2 ? 'Отключена' : (data.locked ? null : 'selected'))}}
-		</div>
-		<div class="clearBoth"></div>
-	{{else}}
-		{{if data.locked}}
-			Проведите ID картой что бы разблокировать
-		{{else}}
-			Проведите ID картой что бы заблокировать
-		{{/if}}
-	{{/if}}
-</div>
 
-<div style="min-width: 480px">
+<!--
+Title: PDA UI
+Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
+ -->
 
-	<h3>Состояние питания</h3>
-
+{{if data.owner}}
 	<div class="item">
-		<div class="itemLabel">
-			Главный рубильник:
+		<div class="itemLabelNarrow">
+			 <b>Функции</b>:
+        </div>
+        <div class="itemContent">
+			<!--{{:helper.link('Обновить', 'refresh', {'choice' : "Refresh"}, null, 'fixedLeft')}}-->
+			{{:helper.link('Закрыть', 'gear', {'choice' : "Close"}, null, 'fixedLeft')}}
+			{{if data.idInserted}} {{:helper.link('Обновить информацию ПДА', 'eject', {'choice' : "UpdateInfo"}, null, 'fixedLeftWide')}} {{/if}}
+			{{if data.mode != 0}} {{:helper.link('Назад', 'arrowreturn-1-w', {'choice' : "Return"}, null, 'fixedLeft')}} {{/if}}
+		</div>
+	</div>
+	<br>
+	<div class="item">
+		<div class="itemLabelNarrow">
+			<b>Станционное время</b>:
 		</div>
 		<div class="itemContent">
-			{{if data.locked && !data.siliconUser}}
-				{{if data.isOperating}}
-					<span class='good'>Включен</span>
-				{{else}}
-					<span class='bad'>Выключен</span>
-				{{/if}}
-			{{else}}
-				{{:helper.link('Включен', 'power', {'breaker' : 1}, data.isOperating ? 'selected' : null)}}{{:helper.link('Выключен', 'close', {'breaker' : 1}, data.isOperating ? null : 'selected')}}
-			{{/if}}
+			<span class="average">{{:data.stationTime}}&emsp;[{{:data.securityLevel}}]</span>
 		</div>
 	</div>
+    {{if data.shuttle_eta}}
+        <div class="item">
+            <div class="itemLabelNarrow">
+                <b>Время до шаттла</b>:
+            </div>
+            <div class="itemContent">
+                <span class="average">{{:data.shuttle_eta}}</span>
+            </div>
+        </div>
+    {{/if}}
+    <br>
 
-	<div class="item">
-		<div class="itemLabel">
-			Внешнее питание:
-		</div>
-		<div class="itemContent">
-			{{if data.externalPower == 2}}
-				<span class='good'>Отлично</span>
-			{{else data.externalPower == 1}}
-				<span class='average'>Низко</span>
-			{{else}}
-				<span class='bad'>Отсутсвует</span>
-			{{/if}}
-		</div>
-	</div>
 
-	<div class="item">
-		<div class="itemLabel">
-			Батарейка:
-		</div>
-		{{if data.powerCellStatus == null}}
-			<div class="itemContent bad">		
-				Батарейка отсутсвует.
-			</div>
+	{{if data.mode == 0}} <!-- Main Menu -->
+        <div class="item">
+            <div class="itemLabelNarrow">
+                Владелец:
+            </div>
+            <div class="itemContent">
+                <span class="average">{{:data.owner}}, {{:data.ownjob}}</span>
+            </div>
+        </div>
+        <br>
+        <div class="item">
+            <div class="itemLabelNarrow">
+                ID:
+            </div>
+            <div class="itemContent">
+                {{:helper.link(data.idLink, 'eject', {'choice' : "Authenticate"}, data.idInserted ? null : 'disabled', data.idInserted ? 'floatright' : 'fixedLeft')}}
+            </div>
+        </div>
+        <br>
+        <div class="item">
+            <div class="itemLabelNarrow">
+                    <b>Cartridge</b>:
+            </div>
+            <div class="itemContent">
+                {{if data.cart_loaded==1}}
+                    {{:helper.link(data.cartridge.name, 'eject', {'choice' : "Eject"},null,null)}}
+                {{else}}
+                    {{:helper.link('None', 'eject', {'choice' : "Eject"},'disabled',null)}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="item">
+            <H2>Функции</H2>
+        </div>
+        <div class="item">
+            <div class="itemLabelNarrow">
+                <b>Общее</b>:
+            </div>
+            <div class="itemContent">
+                {{:helper.link('Записная книжка', 'note', {'choice' : "1"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Сообщения', data.new_Message ? 'mail-closed' : 'mail-open', {'choice' : "2"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Список экипажа', 'contact', {'choice' : "41"}, null, 'fixedLeftWide')}}
+				<!-- {{:helper.link('Новости', data.new_News ? 'mail-closed' : 'mail-open', {'choice' : "6"}, null, 'fixedLeftWide')}} -->
+				{{:helper.link('Управление финансами', 'suitcase', {'choice' : "Finance"}, null, 'fixedLeftWide')}}
+            </div>
+        </div>
+        <br>
+        {{if data.cartridge}}
+            {{if data.cartridge.access.access_clown == 1}}
+                <div class="item">
+                    <div class="itemLabelNarrow">
+                        <b>Клоун</b>:
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link('Синтезатор ХОНКа', 'gear', {'choice' : "Honk"}, null, 'fixedLeftWide')}}
+                    </div>
+                </div>
+                <br>
+            {{/if}}
+            {{if data.cartridge.access.access_engine == 1}}
+                <div class="item">
+                    <div class="itemLabelNarrow">
+                        <b>Инженерное</b>:
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link('Монитор энергосети', 'alert', {'choice' : "43"}, null, 'fixedLeftWide')}}
+                    </div>
+                </div>
+                 <br>
+            {{/if}}
+            {{if data.cartridge.access.access_medical == 1}}
+                <div class="item">
+                    <div class="itemLabelNarrow">
+                            <b>Медицинское</b>:
+                    </div>
+                    <div class="itemContent">
+                            {{:helper.link('Медицинские записи', 'gear', {'choice' : "44"}, null, 'fixedLeftWide')}}
+                            {{:helper.link(data.scanmode == 1 ? 'Выключить медицинский сканнер' : 'Включить медицинский сканнер', 'gear', {'choice' : "Medical Scan"}, null , 'fixedLeftWide')}}
+                    </div>
+                </div>
+                <br>
+            {{/if}}
+            {{if data.cartridge.access.access_security == 1}}
+                <div class="item">
+                    <div class="itemLabelNarrow">
+                            <b>Служба Безопасности</b>:
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link('Криминальные записи', 'gear', {'choice' : "45"}, null, 'fixedLeftWide')}}
+                        {{if data.cartridge.radio ==1}} {{:helper.link('Управление дронами охраны', 'gear', {'choice' : "46"}, null, 'fixedLeftWide')}} {{/if}}
+                        <br>
+                    </div>
+                </div>
+                <br>
+            {{/if}}
+            {{if data.cartridge.access.access_quartermaster == 1}}
+                <div class="item">
+                    <div class="itemLabelNarrow">
+                        <b>Снабжение</b>:
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link('Записи снабжения', 'gear', {'choice' : "47"}, null, 'fixedLeftWide')}}
+                        {{if data.cartridge.radio == 3}} {{:helper.link('Управление дронами доставки', 'gear', {'choice' : "48"}, null, 'fixedLeftWide')}} {{/if}}
+                         <br>
+                    </div>
+                </div>
+                <br>
+            {{/if}}
+        {{/if}}
+        <br>
+        <div class="item">
+            <div class = "itemLabelNarrow">
+                <b>Разное</b>:
+            </div>
+            <div class = "itemContent">
+                {{if data.cartridge}}
+                    {{if data.cartridge.access.access_status_display == 1}}
+                        {{:helper.link('Управление экранами статуса', 'gear', {'choice' : "42"}, null, 'fixedLeftWide')}}
+                    {{/if}}
+                    {{if data.cartridge.access.access_janitor==1}}
+                        {{:helper.link('Указатель вещей уборщика', 'gear', {'choice' : "49"}, null, 'fixedLeftWide')}}
+                    {{/if}}
+                    {{if data.cartridge.radio == 2}}
+                        {{:helper.link('Сигналер', 'gear', {'choice' : "40"}, null, 'fixedLeftWide')}}
+                    {{/if}}
+                    {{if data.cartridge.access.access_reagent_scanner==1}}
+                        {{:helper.link(data.scanmode == 3 ? 'Выключить Сканнер Реагентов' : 'Включить Сканнер Реагентов', 'gear', {'choice' : "Сканирование реагентов"}, null, 'fixedLeftWider')}}
+                    {{/if}}
+                    {{if data.cartridge.access.access_engine==1}}
+                        {{:helper.link(data.scanmode == 4 ? 'Выключить счётчик Гейгера' : 'Включить счётчик Гейгера', 'gear', {'choice' : "Счётчик Гейгера"}, null, 'fixedLeftWider')}}
+                    {{/if}}
+                    {{if data.cartridge.access.access_atmos==1}}
+                        {{:helper.link(data.scanmode == 5 ? 'Выключить Сканнер Газов' : 'Включить Сканнер Газов', 'gear', {'choice' : "Сканирование газов"}, null, 'fixedLeftWide')}}
+                    {{/if}}
+                    {{if data.cartridge.access.access_remote_door==1}}
+                        {{:helper.link('Переключить дверь', 'gear', {'choice' : "Переключить дверь"}, null, 'fixedLeftWide')}}
+                    {{/if}}
+                {{/if}}
+                {{:helper.link('Atmospheric Scan', 'gear', {'choice' : "3"}, null, 'fixedLeftWide')}}
+                {{:helper.link(data.fon==1 ? 'Выключить Фонарик' : 'Включить Фонарик', 'lightbulb', {'choice' : "Фонарик"}, null,'fixedLeftWide')}}
+            </div>
+        </div>
+        {{if data.pai}}
+            <div class="item">
+                <div class = "itemLabelNarrow">
+                    <b>PAI Utilities</b>:
+                </div>
+                <div class = "itemContent">
+                    {{:helper.link('Настройка', 'gear', {'choice' : "pai", 'option' : "1"}, null, 'fixedLeft')}}
+                    {{:helper.link('Вынять pAI', 'eject', {'choice' : "pai", 'option' : "2"}, null, 'fixedLeft')}}
+                </div>
+            </div>
+        {{/if}}
+
+
+	{{else data.mode == 1}} <!-- Notekeeper -->
+        <div class="item">
+            <div class="itemLabel">
+                <b>Записи</b>:
+            </div>
+        </div>
+        <div class="statusDisplayRecords">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+                        <span class="average">{{:data.note}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="itemLabel">
+                {{:helper.link('Редактировать записи', 'gear', {'choice' : "Редактировать"}, null, 'fixedLeft')}}
+            </div>
+        </div>
+
+
+    {{else data.mode == 2}} <!-- Messenger -->
+        <H2>SpaceMessenger V4.0.1</H2>
+        <div class="item">
+            <div class="itemLabelNarrow">
+                <b>Messenger Functions</b>:
+            </div>
+            <div class ="itemContent">
+                {{:helper.link(data.message_silent==1 ? 'Ringer: Off' : 'Ringer: On', data.message_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Toggle Ringer"}, null, 'fixedLeftWide')}}
+                {{:helper.link(data.toff==1 ? 'Messenger: Off' : 'Messenger: On',data.toff==1 ? 'close':'check', {'choice' : "Toggle Messenger"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Set Ringtone', 'comment', {'choice' : "Ringtone"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Delete all Conversations', 'trash', {'choice' : "Clear", 'option' : "All"}, null, 'fixedLeftWider')}}
+            </div>
+        </div>
+        {{if data.toff == 0}}
+            <br><br>
+            {{if data.cartridge}}
+                {{if data.cartridge.charges}}
+                    <div class="item">
+                        <b>{{:data.cartridge.charges}}
+                        {{if data.cartridge.access.access_detonate_pda}} detonation charges left. {{/if}}
+                        {{if data.cartridge.access.access_clown || data.cartridge.access.access_mime}} viral files left. {{/if}}
+                        </b>
+                        <br><br>
+                    </div>
+                {{/if}}
+            {{/if}}
+
+            {{if data.pda_count == 0}}
+                <b>No other PDAS located</b>
+            {{else}}
+                <H3>Current Conversations</H3>
+                {{for data.convopdas}}
+                    <div class="item">
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Select Conversation", 'convo' : value.Reference } , null, value.fixedLeftWider)}}
+                        {{if data.cartridge}}
+                            {{if data.cartridge.access.access_detonate_pda && value.Detonate}}
+                                {{:helper.link('*Detonate*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}
+                            {{/if}}
+                            {{if data.cartridge.access.access_clown}}
+                                {{:helper.link('*Отправить Virus*', 'star', {'choice' : "Отправить Honk", 'target' : value.Reference}, null, 'fixedLeft')}}
+                            {{/if}}
+                            {{if data.cartridge.access.access_mime}}
+                                {{:helper.link('*Отправить Virus*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                {{/for}}
+                <H3>Other PDAs</H3>
+                {{for data.pdas}}
+                    <div class="item">
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Message", 'target' : value.Reference}, null, value.fixedLeftWider)}}
+                        {{if data.cartridge}}
+                            {{if data.cartridge.access.access_detonate_pda && value.Detonate}} {{:helper.link('*Detonate*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_clown}} {{:helper.link('*Отправить Virus*', 'star', {'choice' : "Отправить Honk", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_mime}}  {{:helper.link('*Отправить Virus*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                        {{/if}}
+                    </div>
+                {{/for}}
+            {{/if}}
+        {{/if}}
+
+
+	{{else data.mode == 21}} <!-- Messenger -->
+	    <H2>Космо-Мессенджер V4.0.1</H2>
+        <div class="item">
+            <div class="itemLabel">
+                <b>Функции мессенджера</b>:
+            </div>
+            <div class ="itemContent">
+                {{:helper.link('Удалить переписку', 'trash', {'choice' : "Очистить", 'option' : "Convo"}, null, 'fixedLeftWide')}}
+            </div>
+        </div>
+        <br>
+        <br>
+        <H3>Переписки с:&nbsp;<span class="average">{{:data.convo_name}}&nbsp;({{:data.convo_job}})</span></H3>
+        <div class="statusDisplay" style="overflow: auto;">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+                    {{for data.messages}}
+                        {{if data.active_conversation == value.target}}
+                            {{if value.sent==0}}
+                                <span class="average"><B>Они</B>: {{:value.message}}</span><br>
+                            {{else}}
+                                <span class="good"><B>Вы</B>: {{:value.message}}</span><br>
+                            {{/if}}
+                        {{/if}}
+                    {{/for}}
+                </div>
+            </div>
+        </div>
+        {{:helper.link('Ответить', 'comment', {'choice' : "Написать", 'target': data.active_conversation}, null, 'fixedLeft')}}
+
+
+	{{else data.mode== 41}} <!-- Manifest uses cached data so we only use nanowriter when shit changes.-->
+	    <div class="item">
+            <center><table class="pmon"><tbody>
+                {{if data.cached.heads.length}}
+                    <tr><th colspan="4" class="command">Командный состав</th></tr>
+                    {{for data.cached["heads"]}}
+                        {{if value.rank == "Captain"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.sec.length}}
+                    <tr><th colspan="4" class="sec">Служба Безопасности</th></tr>
+                    {{for data.cached["sec"]}}
+                        {{if value.rank == "Head of Security"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.eng.length}}
+                    <tr><th colspan="4" class="eng">Инженеры</th></tr>
+                    {{for data.cached["eng"]}}
+                        {{if value.rank == "Chief Engineer"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.med.length}}
+                    <tr><th colspan="4" class="med">Медики</th></tr>
+                    {{for data.cached["med"]}}
+                        {{if value.rank == "Chief Medical Officer"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.sci.length}}
+                    <tr><th colspan="4" class="sci">Ученые</th></tr>
+                    {{for data.cached["sci"]}}
+                        {{if value.rank == "Research Director"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.civ.length}}
+                    <tr><th colspan="4" class="civ">Гражданские</th></tr>
+                    {{for data.cached["civ"]}}
+                        {{if value.rank == "Head of Personnel"}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
+                        {{else}}
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                        {{/if}}
+                    {{/for}}
+                {{/if}}
+                {{if data.cached.misc.length}}
+                    <tr><th colspan="4" class="misc">Разное</th></tr>
+                    {{for data.cached["misc"]}}
+                        <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                        <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
+                    {{/for}}
+                {{/if}}
+            </tbody></table></center>
+        </div>
+
+
+	{{else data.mode == 3}}
+        <H2>Атмосферное сканирование</H2>
+        <div class="statusDisplay" style="height: 250px; overflow: auto;">
+            <div class="item">
+                {{if data.aircontents.reading == 1}}
+                    <div class="itemLabel">
+                        Давление:
+                    </div>
+                    <div class = "itemContent">
+				        {{:helper.string('<span class="{0}">{1} кПа</span>', data.aircontents.pressure < 80 || data.aircontents.pressure > 120 ? 'bad' : data.aircontents.pressure < 95 || data.aircontents.pressure > 110 ? 'average' : 'good' , data.aircontents.pressure)}}
+                    </div>
+                    <div class="itemLabel">
+                        Температура:
+                    </div>
+                    <div class = "itemContent">
+				        {{:helper.string('<span class="{0}">{1} &deg;C</span>', data.aircontents.temp < 5 || data.aircontents.temp > 35 ? 'bad' : data.aircontents.temp < 15 || data.aircontents.temp > 25 ? 'average' : 'good' , data.aircontents.temp)}}
+                    </div>
+                    <br>
+                    <div class="itemLabel">
+                        Кислород:
+                    </div>
+                    <div class = "itemContent">
+                        {{:helper.string('<span class="{0}">{1}%</span>', data.aircontents.oxygen < 17 ? 'bad' : data.aircontents.oxygen < 19 ? 'average' : 'good' , data.aircontents.oxygen)}}
+                    </div>
+                    <div class="itemLabel">
+                        Азот:
+                    </div>
+                    <div class = "itemContent">
+                        {{:helper.string('<span class="{0}">{1}%</span>', data.aircontents.nitrogen > 82 ? 'bad' : data.aircontents.nitrogen > 80 ? 'average' : 'good' , data.aircontents.nitrogen)}}
+                    </div>
+                    <div class="itemLabel">
+                        Углекислый газ:
+                    </div>
+                    <div class = "itemContent">
+                        {{:helper.string('<span class="{0}">{1}%</span>', data.aircontents.carbon_dioxide > 5 ? 'bad' : 'good' , data.aircontents.carbon_dioxide)}}
+                    </div>
+                    <div class="itemLabel">
+                        Форон:
+                    </div>
+                    <div class = "itemContent">
+                        {{:helper.string('<span class="{0}">{1}%</span>', data.aircontents.phoron  > 0 ? 'bad' : 'good' , data.aircontents.phoron)}}
+
+                    </div>
+                    {{if data.aircontents.other > 0}}
+                        <div class="itemLabel">
+                            Неизвестно:
+                        </div>
+                        <div class = "itemContent">
+                            <span class="bad">{{:data.aircontents.other}}%</span>
+                        </div>
+                    {{/if}}
+                {{else}}
+                    <div class="itemContent" style="width: 100%;">
+                        <span class="average"><b>Не удалось просканировать воздух</b></span>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+
+
+	{{else data.mode == 40}} <!-- Cartridge: Signaler -->
+        <H2>Удаленная сигнальная система</H2>
+        <div class="item">
+            <div class="itemLabel">
+                <b>Частота</b>:
+            </div>
+            <div class="itemContent">
+                {{:data.records.signal_freq}}
+                <br>
+                &nbsp;
+                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "-10"}, null, null)}}&nbsp;
+                {{:helper.link('-.2', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "-2"}, null, null)}}&nbsp;
+
+                {{:helper.link('+.2', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "2"}, null, null)}}&nbsp;
+                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "10"}, null, null)}}
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="item">
+            <div class="itemLabel">
+                    <b>Код</b>:
+            </div>
+            <div class="itemContent">
+                <span class="average">
+                    {{:data.records.signal_code}}<br>
+                </span>
+                {{:helper.link('-5', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "-5"}, null, null)}}
+                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "-1"}, null, null)}}
+                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "1"}, null, null)}}
+                {{:helper.link('+5', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "5"}, null, null)}}
+            </div>
+        </div>
+        <div class="item">
+            {{:helper.link('Отправить Сигнал', 'radiation', {'cartmenu' : "1", 'choice' : "Отправить Сигнал"}, null, null)}}
+        </div>
+
+
+    {{else data.mode == 42}}
+        <H2>Настройка экранов статуса станции</H2>
+        <div class="item">
+            <div class="itemLabel">
+                <b>Код</b>:
+            </div>
+            <div class="itemContent">
+                {{:helper.link('Пусто', 'trash', {'cartmenu' : "1", 'choice' : "Status", 'statdisp' : "blank"}, null, null)}}
+                {{:helper.link('Время до шаттла', 'gear', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "shuttle"}, null, null)}}
+                {{:helper.link('Сообщение', 'gear', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "message"}, null, null)}}
+            </div>
+        </div>
+        <br>
+        <div class="item">
+            <div class="itemLabel">
+                <b>Первая строка сообщения</b>
+            </div>
+            <div class="itemContent">
+                {{:helper.link(data.records.message1 + ' (set)', 'pencil', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "setmsg1"}, null, null)}}
+            </div>
+        </div>
+        <div class="item">
+            <div class="itemLabel">
+                <b>Вторая строка сообщения</b>
+            </div>
+            <div class="itemContent">
+                {{:helper.link(data.records.message2 + ' (set)', 'pencil', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "setmsg2"}, null, null)}}
+            </div>
+        </div>
+
+        <br>
+        <div class="item">
+            <div class="itemLabel">
+                <b> ТРЕВОГА!</b>:
+            </div>
+            <div class="itemContent">
+                {{:helper.link('Стандартное', 'gear', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "default"}, null, null)}}
+                {{:helper.link('Красная тревога', 'alert', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "alert", 'alert' : "redalert"}, null, null)}}
+                {{:helper.link('Блокировка', 'caution', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "alert", 'alert' : "lockdown"}, null, null)}}
+                {{:helper.link('Биоугроза', 'radiation', {'cartmenu' : "1", 'choice' : "Status",'statdisp' : "alert", 'alert' : "biohazard"}, null, null)}}
+            </div>
+        </div>
+
+    {{else data.mode == 43}}
+        <H2>Выбор сенсоров</H2>
+        <div class="item">
+            Доступные датчики:
+        </div>
+        {{for data.records.powermonitors}}
+            <div class="item">
+                {{:helper.link(value.Name, 'plus', {'cartmenu' : "1", 'choice' : "Power Select",'target' : value.ref})}}<br>
+            </div>
+        {{/for}}
+
+
+    {{else data.mode == 433}}
+        <H2>Показания датчиков(Simplified View)</H2>
+		{{if data.records.powermonitor_detected}}
+			<table><tr><th>Область<th>Об.<th>Lgt.<th>Окр.<th>Батарея %<th>Load
+			{{for data.records.apcs}}
+				<tr><td>{{:value.Name}}
+				<td>{{:value.Equipment}}
+				<td>{{:value.Lights}}
+				<td>{{:value.Environment}}
+				<td>{{:value.CellStatus}}
+				<td>{{:value.Load}}
+			{{empty}}
+				<tr><td>Не обнаружено АПЦ!
+			{{/for}}
+			</table>
+			<br><b>Доступное: {{:data.records.poweravail}} W</b>
+			<br><b>Нагрузка: {{:data.records.powerload}} W</b>
 		{{else}}
-			
-			{{:helper.displayBar(data.powerCellStatus, 0, 100, (data.powerCellStatus >= 50) ? 'good' : (data.powerCellStatus >= 25) ? 'average' : 'bad')}}
-			<div class="itemContent" style="width: 60px">		
-				{{:helper.round(data.powerCellStatus*10)/10}}%
-			</div>	
+			Невозможно установить контакт с датчиком! Попробуйте еще раз и сконтактируйте с тех. поддержкой если проблема останется.
 		{{/if}}
-	</div>
 
-	{{if data.powerCellStatus != null}}
+	{{else data.mode == 44}}
+	    <H2>Список медицинских записей</H2>
+        <div class="item">
+	        Выберите Запись
+	    </div>
+	    <br>
+		{{for data.records.medical_records}}
+            <div class="item">
+                 {{:helper.link(value.Name, 'gear', {'cartmenu' : "1", 'choice' : "Medical Records",'target' : value.ref}, null, null)}}
+            </div>
+		{{/for}}
+
+
+	{{else data.mode == 441}}
+        <H2>Медицинская Запись</H2>
+        <div class="statusDisplayRecords">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+                    {{if data.records.general_exists == 1}}
+                        <span class="good">Имя:		</span> <span class="average">{{:data.records.general.name}}	</span><br>
+                        <span class="good">Пол:			</span> <span class="average">{{:data.records.general.sex}}		</span><br>
+                        <span class="good">Вид:		</span> <span class="average">{{:data.records.general.species}}	</span><br>
+                        <span class="good">Возраст:			</span> <span class="average">{{:data.records.general.age}}		</span><br>
+                        <span class="good">Должность:		</span> <span class="average">{{:data.records.general.rank}}	</span><br>
+                        <span class="good">Отпечатки:		</span> <span class="average">{{:data.records.general.fingerprint}}	</span><br>
+                        <span class="good">Физическое состояние:	</span> <span class="average">{{:data.records.general.p_stat}}	</span><br>
+                        <span class="good">Психологическое состояние:	</span> <span class="average">{{:data.records.general.m_stat}}	</span><br><br>
+                    {{else}}
+                        <span class="bad">
+                            Медицинская Запись Утеряна!<br><br>
+                        </span>
+                    {{/if}}
+                    {{if data.records.medical_exists == 1}}
+                        Медицинские Данные:<br>
+                        <span class="good">Тип крови:		</span> <span class="average">{{:data.records.medical.b_type}}	</span><br><br>
+                        <span class="good">Малые недостаточности:	</span> <span class="average">{{:data.records.medical.mi_dis}}	</span><br>
+                        <span class="good">Подробности:		</span> <span class="average">{{:data.records.medical.mi_dis_d}}	</span><br><br>
+                        <span class="good">Крупные недостаточности:	</span> <span class="average">{{:data.records.medical.ma_dis}}	</span><br>
+                        <span class="good">Подробности:		</span> <span class="average">{{:data.records.medical.ma_dis_d}}	</span><br><br>
+                        <span class="good">Алергии:		</span> <span class="average">{{:data.records.medical.alg}}		</span><br>
+                        <span class="good">Подробности:		</span> <span class="average">{{:data.records.medical.alg_d}}	</span><br><br>
+                        <span class="good">Текущая болезнь:	</span> <span class="average">{{:data.records.medical.cdi}}		</span><br>
+                        <span class="good">Подробности:		</span> <span class="average">{{:data.records.medical.alg_d}}	</span><br><br>
+                        <span class="good">Важные Заметки:	</span> <span class="average">{{:data.records.medical.notes}}	</span>
+                    {{else}}
+                        <span class="bad">
+                            Медицинская Запись Утеряна!
+                            <br>
+                            <br>
+                        </span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+
+ 	{{else data.mode == 45}}
+        <H2>Список криминальных записей</H2>
+        <div class="item">
+            Выберите Запись
+        </div>
+        <br>
+        {{for data.records.security_records}}
+            <div class="item">
+                 {{:helper.link(value.Name, 'gear', {'cartmenu' : "1", 'choice' : "Security Records",'target' : value.ref}, null, null)}}
+            </div>
+        {{/for}}
+
+
+    {{else data.mode == 451}}
+        <H2>Личное дело</H2>
+        <div class="statusDisplayRecords">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+                    {{if data.records.general_exists == 1}}
+                        <span class="good">Имя: </span> <span class="average"> {{:data.records.general.name}}</span><br>
+                        <span class="good">Пол: </span>  <span class="average">{{:data.records.general.sex}} </span><br>
+                        <span class="good">Вид: </span> <span class="average">{{:data.records.general.species}} </span><br>
+                        <span class="good">Возраст: </span>  <span class="average">{{:data.records.general.age}} </span><br>
+                        <span class="good">Родная Система:  </span> <span class="average">{{:data.records.general.home_system}} </span><br>
+                        <span class="good">Гражданство:  </span> <span class="average">{{:data.records.general.citizenship}} </span><br>
+                        <span class="good">Faction:  </span> <span class="average">{{:data.records.general.faction}} </span><br>
+                        <span class="good">Религия:  </span> <span class="average">{{:data.records.general.religion}} </span><br>						
+                        <span class="good">Должность: </span>  <span class="average">{{:data.records.general.rank}} </span><br>
+                        <span class="good">Отпечатки пальцев:  </span> <span class="average">{{:data.records.general.fingerprint}} </span><br>
+                        <span class="good">Физическое состояние:  </span> <span class="average">{{:data.records.general.p_stat}} </span><br>
+                        <span class="good">Психологическое состояние:  </span> <span class="average">{{:data.records.general.m_stat}} </span><br><br>
+                    {{else}}
+                        <span class="bad">
+                            Запись отсутсвет!<br><br>
+                        </span>
+                    {{/if}}
+                    {{if data.records.security_exists == 1}}
+                        Security Data:<br>
+                        <span class="good">Криминальный статус:  </span><span class="average">{{:data.records.security.criminal}} </span><br><br>
+                        <span class="good">Малые преступления:  </span><span class="average">{{:data.records.security.mi_crim}} </span><br>
+                        <span class="good">Подробности:  </span><span class="average">{{:data.records.security.mi_crim_d}} </span><br><br>
+                        <span class="good">Крупные преступления:  </span><span class="average">{{:data.records.security.ma_crim}} </span><br>
+                        <span class="good">Подробности:  </span><span class="average">{{:data.records.security.ma_crim_d}} </span><br><br>
+                        <span class="good">Важные Заметки:   </span><span class="average">{{:data.records.security.notes}} </span>
+                    {{else}}
+                        <span class="bad">
+                            Личное дело отсутсвет!<br><br>
+                        </span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+
+	{{else data.mode == 46}}
+	    <H2>Управление дронами охраны </H2>
+		{{if data.records.beepsky.active == null || data.records.beepsky.active == 0}}
+			{{if data.records.beepsky.count == 0}}
+				<H1><span class="bad">Не найдено дронов.</span></H1>
+			{{else}}
+                <div class="item">
+			        Выберите дрона.
+                </div>
+                <br>
+                {{for data.records.beepsky.bots}}
+			        <div class="item">
+                         {{:helper.link(value.Name, 'gear', {'radiomenu' : "1", 'op' : "control",'bot' : value.ref}, null, null)}} (Расположение: {{:value.Location}})
+			        </div>
+                {{/for}}
+			{{/if}}
+			<br>
+            {{:helper.link('Просканировать дронов','gear', {'radiomenu' : "1", 'op' : "scanbots"}, null, null)}}
+		{{else}}
+			<H1><span class="average">{{:data.records.beepsky.active}}</span></H1>
+			<br><br>
+			{{if data.records.beepsky.botstatus.mode == -1}}
+                <H1><span class="bad">Ожидание ответа...</span></H1>
+			{{else}}
+                <H1><span class="good">Статус:</span></H1>
+                <br>
+                <div class = "item">
+                    <div class="itemLabel">
+                        <span class="good">Расположение:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">{{:data.records.beepsky.botstatus.loca}}</span>
+                    </div>
+                </div>
+                <div class = "item">
+                    <div class="itemLabel">
+                        <span class="good">Режим:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">
+                            {{if data.records.beepsky.botstatus.mode ==0}}
+                                Готов
+                            {{else data.records.beepsky.botstatus.mode == 1}}
+                                Преследование цели
+                            {{else data.records.beepsky.botstatus.mode ==2 || data.records.beepsky.botstatus.mode == 3}}
+                                Арест цели
+                            {{else data.records.beepsky.botstatus.mode ==4}}
+                                Начало патруля
+                            {{else data.records.beepsky.botstatus.mode ==5}}
+                                Патрулирует
+                            {{else data.records.beepsky.botstatus.mode ==6}}
+                                Ожидает вызовов
+                            {{/if}}
+                        </span>
+                    </div>
+                </div>
+                <div class="item">
+                    {{:helper.link('Прекратить патрулирование', 'gear', {'radiomenu' : "1", 'op' : "stop"}, null, null)}}
+                    {{:helper.link('Начать патрулирование', 'gear', {'radiomenu' : "1", 'op' : "go"}, null, null)}}
+                    {{:helper.link('Вызвать дрона', 'gear', {'radiomenu' : "1", 'op' : "summon"}, null, null)}}
+                </div>
+			{{/if}}
+			{{:helper.link('Вернутся к списку дронов', 'gear', {'radiomenu' : "1", 'op' : "botlist"}, null, null)}}
+		{{/if}}
+
+
+	{{else data.mode == 47}}
+		<H1><span class="average">Журнал снабжения</span></H1>
 		<div class="item">
-			<div class="itemLabel">
-				Режим зарядки:
+			<div class="itemLabelNarrow">
+				<span class="good">Расположение:</span>
 			</div>
 			<div class="itemContent">
-				{{if data.locked && !data.siliconUser}}
-					{{if data.chargeMode}}
-						<span class='good'>Авто</span>
+				<span class="average">
+					{{if data.records.supply.shuttle_moving}}
+					    На подлете к станции ({{:data.records.supply.shuttle_eta}})
 					{{else}}
-						<span class='bad'>Выключено</span>
-					{{/if}}				
-				{{else}}
-					{{:helper.link('Авто', 'refresh', {'cmode' : 1}, data.chargeMode ? 'selected' : null)}}{{:helper.link('Выключить', 'close', {'cmode' : 1}, data.chargeMode ? null : 'selected')}}
-				{{/if}}
-				&nbsp;
-				{{if data.chargingStatus > 1}}
-					[<span class='good'>Полностью заряжен</span>]
-				{{else data.chargingStatus == 1}}
-					[<span class='average'>Заряжается</span>]
-				{{else}}
-					[<span class='bad'>Не заряжается</span>]
-				{{/if}}
+					    Прибудет через {{:data.records.supply.shuttle_loc}}
+					{{/if}}
+				</span>
 			</div>
 		</div>
-	{{/if}}
-
-
-	<h3>Каналы потребления</h3>
-
-	{{for data.powerChannels}}
-		<div class="item">
-			<div class="itemLabel">
-				{{:value.title}}:
-			</div>
-			<div class="itemContent" style="width: 70px; text-align: right">
-				{{:value.powerLoad}}&nbsp;W
-			</div>
-			<div class="itemContent" style="width: 105px">
-				&nbsp;&nbsp;
-				{{if value.status <= 1}}
-					<span class='bad'>Выключен</span>
-				{{else value.status >= 2}}
-					<span class='good'>Включен</span>
-				{{/if}}
-				{{if data.locked}}
-					{{if value.status == 1 || value.status == 3}}
-						&nbsp;&nbsp;Авто
-					{{else}}
-						&nbsp;&nbsp;Ручное
-					{{/if}}		
-				{{/if}}
-			</div>
-			{{if !data.locked || data.siliconUser}}
-				<div class="itemContentFull">
-					{{:helper.link('Авто', 'refresh', value.topicParams.auto, (value.status == 1 || value.status == 3) ? 'selected' : null)}}
-					{{:helper.link('Включен', 'power', value.topicParams.on, (value.status == 2) ? 'selected' : null)}}
-					{{:helper.link('Выключен', 'close', value.topicParams.off, (value.status == 0) ? 'selected' : null)}}
+		<div class="statusDisplayRecords">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+                    <span class="good"><B>Текущие Одобреные Заказы</B></span><br>
+                    {{if data.records.supply.approved_count == 0}}
+                        <span class="average"> Отсутсвуют одобреные заказы </span><br><br>
+                    {{else}}
+                        {{for data.records.supply.approved}}
+                            <span class="average">#{{:value.Number}} - {{:value.Name}} одобрено {{:value.OrderedBy}}<br>{{if value.Comment != ""}} {{:value.Comment}} <br>{{/if}}<br></span>
+                        {{/for}}
+                    {{/if}}
+                    <br><br>
+                    <span class="good"><B>Текущие Запрошеные Заказы</B></span><br>
+                    {{if data.records.supply.requests_count == 0}}
+                            <span class="average">Отсутсвуют Запрошеные Заказы</span><br><br>
+                    {{else}}
+                        {{for data.records.supply.requests}}
+                            <span class="average">#{{:value.Number}} - {{:value.Name}} запрошено {{:value.OrderedBy}}<br>{{if value.Comment != ""}} {{:value.Comment}} <br>{{/if}}<br></span>
+                        {{/for}}
+                    {{/if}}
 				</div>
-			{{/if}}
-		</div>
-	{{/for}}
-
-	<div class="item" style="font-weight: bold">
-		<div class="itemLabel">
-			Нагрузка на сеть:
-		</div>
-		<div class="itemContent">
-			{{if data.totalCharging}}
-				{{:data.totalLoad}}Вт (+ {{:data.totalCharging}}Вт Заряжается)
-			{{else}}
-				{{:data.totalLoad}}Вт
-			{{/if}}
-		</div>
-	</div>
-
-	<div class="item">&nbsp;</div>
-
-	<div class="item">
-		<div class="itemLabel">
-			Заслонка:
-		</div>
-		<div class="itemContent">
-			{{if data.locked && !data.siliconUser}}
-				{{if data.coverLocked}}
-					<span class='good'>Закрыта</span>
-				{{else}}
-					<span class='bad'>Открыта</span>
-				{{/if}}
-			{{else}}
-				{{:helper.link('Закрыта', 'locked', {'lock' : 1}, data.coverLocked ? 'selected' : null)}}{{:helper.link('Открыта', 'unlocked', {'lock' : 1}, data.coverLocked ? null : 'selected')}}
-			{{/if}}
-		</div>
-	</div>
-	
-	{{if !data.locked || data.siliconUser}}
-		<div class="item">
-			<div class="itemLabel">
-				Night Shift Lighting:
-			</div>
-			<div class="itemContent">
-				{{:helper.link(data.nightshift_lights ? 'Disable' : 'Enable', 'power', {'toggle_nightshift' : 1})}}
-				{{if data.nightshift_lights}}
-					{{:helper.link('Change theme', 'lightbulb', {'change_nightshift' : 1})}}
-				{{/if}}
 			</div>
 		</div>
-	{{/if}}
 
-	{{if data.siliconUser}}
-		<h3>System Overrides</h3>
 
-		<div class="item">
-			{{:helper.link('Overload Lighting Circuit', 'lightbulb', {'overload' : 1})}}
-			{{if data.malfStatus == 1}}
-				{{:helper.link('Override Programming', 'script', {'malfhack' : 1})}}
-			{{else data.malfStatus > 1}}
-				<div class='notice'>APC Hacked</div>
-			{{/if}}
-		</div>
-	{{/if}}
+	{{else data.mode == 48}}
+ 		<H2>Контроль МУЛов </H2>
+        {{if data.records.mulebot.active == null || data.records.mulebot.active == 0}}
+            {{if data.records.mulebot.count == 0}}
+                <H1><span class="bad">Не обнаружено дронов.</span></H1>
+            {{else}}
+                <H2>Mule List</H2>
+                <div class="item">
+                    Выберите МУЛа
+                </div>
+                <br>
+                {{for data.records.mulebot.bots}}
+                    <div class="item">
+                         {{:helper.link(value.Name, 'gear', {'radiomenu' : "1", 'op' : "control",'bot' : value.ref}, null, null)}} (Расположение: {{:value.Location}})
+                    </div>
+                {{/for}}
+            {{/if}}
+            <br>
+            {{:helper.link('Просканировать дронов','gear', {'radiomenu' : "1", 'op' : "scanbots"}, null, null)}}
+        {{else}}
+            {{if data.records.mulebot.botstatus.mode == -1}}
+                <H1><span class="bad">Ожидание ответа...</span></H1>
+            {{else}}
+                <H1><span class="average">Статус:</span></H1>
+                <br>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Расположение:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">{{:data.records.mulebot.botstatus.loca}}</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Режим:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">
+                            {{if data.records.mulebot.botstatus.mode ==0}}
+                                Готов
+                            {{else data.records.mulebot.botstatus.mode == 1}}
+                                Погрузка/Выгрузка
+                            {{else data.records.mulebot.botstatus.mode ==2}}
+                                Двигается к Адресу Доставки
+                            {{else data.records.mulebot.botstatus.mode == 3}}
+                                Двигается Домой
+                            {{else data.records.mulebot.botstatus.mode ==4}}
+                                Ожидание свободного пути
+                            {{else data.records.mulebot.botstatus.mode ==5 || data.records.mulebot.botstatus.mode == 6}}
+                               Просчет пути
+                            {{else data.records.mulebot.botstatus.mode ==7}}
+                                Невозможно обнаружить пункт назначения
+                            {{/if}}
+                        </span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Погружено:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">
+                            {{:helper.link(data.records.mulebot.botstatus.load == null ? 'None (Unload)' : data.records.mulebot.botstatus.load + ' (Unload)', 'gear', {'radiomenu' : "1", 'op' : "unload"},data.records.mulebot.botstatus.load == null ? 'disabled' : null, null)}}
+                        </span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Заряд:</span>
+                    </div>
+                    <div class="itemContent">
+                        <span class="average">
+                            {{:data.records.mulebot.botstatus.powr}}%
+                        </span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Пункт Назначения:</span>
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link(data.records.mulebot.botstatus.dest == null || data.records.mulebot.botstatus.dest == "" ? 'Отсутсвует (Установить)': data.records.mulebot.botstatus.dest+ ' (Set)', 'gear', {'radiomenu' : "1", 'op' : "setdest"}, null, null)}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Home:</span>
+                    </div>
+                    <div class="itemContent">
+                        {{if data.records.mulebot.botstatus.home == null}} None {{else}} {{:data.records.mulebot.botstatus.home}} {{/if}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Авто вовзращение:</span>
+                    </div>
+                    <div class="itemContent">
+                       {{:helper.link(data.records.mulebot.botstatus.retn == 1 ? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН', 'gear', {'radiomenu' : "1", 'op' : data.records.mulebot.botstatus.retn==1 ? "retoff" : "reton"}, null, null)}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Auto Pickup:</span>
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link(data.records.mulebot.botstatus.pick==1? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН', 'gear', {'radiomenu' : "1", 'op' : data.records.mulebot.botstatus.pick==1 ? "pickoff" : "pickon"}, null, null)}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="itemLabel">
+                        <span class="good">Functions:</span>
+                    </div>
+                    <div class="itemContent">
+                        {{:helper.link('Стоп', 'gear', {'radiomenu' : "1", 'op' : "stop"}, null, null)}}
+                        {{:helper.link('Возобновить', 'gear', {'radiomenu' : "1", 'op' : "go"}, null, null)}}
+                        {{:helper.link('Вернутся домой', 'gear', {'radiomenu' : "1", 'op' : "home"}, null, null)}}
+                    </div>
+                </div>
+                <br><br>
+                {{:helper.link('Вернутся к списку дронов', 'gear', {'radiomenu' : "1", 'op' : "botlist"}, null, null)}}
+            {{/if}}
+        {{/if}}
 
-</div>
+
+	{{else data.mode == 49}}
+        <H2>Локатор припасов уборщика</H2>
+        <div class="item">
+            <span class="good">Текущая позиция:</span>
+            {{if data.records.janitor.user_loc.x == 0}}
+                <span class="bad">Неизвестно</span>
+            {{else}}
+                <span class="average"> {{:data.records.janitor.user_loc.x}} / {{:data.records.janitor.user_loc.y}}</span>
+            {{/if}}
+        </div>
+            <div class="item">
+                {{for data.records.janitor.mops}}
+                    {{if value.x==0}}
+                        <span class="bad">Невозможно обнаружить швабру</span>
+                    {{else}}
+                        <span class="good">Локация швабры:</span>
+                        <span class="average">({{:value.x}} / {{:value.y}}) - {{:value.dir}} - Статус: {{:value.status}}</span><br>
+                    {{/if}}
+                {{/for}}
+            </div>
+        <div class="item">
+            {{for data.records.janitor.buckets}}
+                {{if value.x==0}}
+                    <span class="bad">Unable to locate Water Buckets</span>
+                {{else}}
+                    <span class="good">Локации ведёр с водой:</span>
+                    <span class="average">({{:value.x}} / {{:value.y}}) - {{:value.dir}} -Уровень воды: {{:value.status}}</span><br>
+                {{/if}}
+            {{/for}}
+        </div>
+        <div class="item">
+            {{for data.records.janitor.cleanbots}}
+                {{if value.x==0}}
+                    <span class="bad">Невозможно обнаружить дронов-уборщиков</span>
+                {{else}}
+                    <span class="good">Расположение дронов-уборщиков:</span>
+                    <span class="average">({{:value.x}} / {{:value.y}}) - {{:value.dir}} - Статус: {{:value.status}}</span><br>
+                {{/if}}
+            {{/for}}
+        </div>
+            <div class="item">
+                {{for data.records.janitor.carts}}
+                    {{if value.x==0}}
+                        <span class="bad">Невозможно найти тележку уборщика</span>
+                    {{else}}
+                        <span class="good">Расположение тележки уборщика:</span>
+                        <span class="average">({{:value.x}} / {{:value.y}}) - {{:value.dir}} - Статус: {{:value.status}}</span><br>
+                    {{/if}}
+                {{/for}}
+                
+    <!-- {{else data.mode == 6}}
+        <H2><span class="white">InstaNews ED 2.0.9</span></H2>
+        
+        <div class="item">
+            <div class="itemLabelNarrow">
+                <b>Функции</b>:
+            </div>
+            <div class ="itemContent">
+					{{:helper.link(data.news_silent==1 ? 'Выключить звонок' : 'Включить звонок', data.news_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Включить новости"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Выставить рингтон новостей', 'comment', {'choice' : "Newstone"}, null, 'fixedLeftWide')}}
+            </div>
+        </div>
+        
+		{{if data.reception != 1}}
+			<span class="bad">Отсутсвует соединение с новостной сетью.</span>
+		{{/if}}
 		
+		<div class="item">
+            <div class="itemContent">
+                {{for data.feedChannels}}
+                    {{if value.censored}}
+						{{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Выбрать Ленту", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWiderRed')}}
+                    {{else}}
+                        {{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Выбрать Ленту", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWider')}}
+                    {{/if}}
+                {{empty}}
+                    <I>Не найдено активных каналов...</I>
+                {{/for}}
+            </div>
+		</div>
+
+    {{else data.mode == 61}}      
+        <H2><span class="white">{{:data.feed.channel}}</span></H2>
+        <span class="white">Создатель: </span><span class="average">{{:data.feed.author}}<br></span>
+		
+		{{if data.reception != 1}}
+			<span class="bad">Отсутсвует соединение с новостной сетью.</span>
+		{{/if}}
+		
+        <div class="statusDisplay" style="overflow: auto;">
+            <div class="item">
+                <div class="itemContent" style="width: 100%;">
+					{{if data.feed.censored}}
+						<H3><span class="bad">Attention</span></H3>
+						Этот канал был признан угрозой порядочности станции и был помечен пометкой D НаноТрайзен.<br>
+						Дальнейшие обновления канала заблокированы пока активна метка D.<br>
+					{{else}}
+						{{for data.feed.messages}}
+							-{{:value.body}}<br>
+							{{if value.has_image}}
+								<img src='pda_news_tmp_photo_{{:data.feed.channel}}_{{:value.index}}.png' width = '180'><br>
+								{{if value.caption}}
+									<span class="caption">{{:value.caption}}</span><br>
+								{{/if}}
+							{{/if}}
+							<span class="footer">[{{:value.message_type}} by <span class="average">{{:value.author}}</span> - {{:value.time_stamp}}]</span><br>
+							<br>
+						{{empty}}
+							<I>Не обнаружено сообщений в новостном канале...</I>
+						{{/for}}
+					{{/if}}
+				</div>
+            </div>
+        </div> -->
+	
+    {{else data.mode == 7}} <!-- Finance Management -->
+        <div class="item">
+            <H2>Управление финансамиt</H2>
+        </div>
+        <div class="item">
+            <div class="itemLabelWide">
+                <b>Деньги:</b> <span class="good">{{:data.money}}$</span><br>
+                <b>Зарплата:</b> <span class="good">{{:data.salary}}$</span><br>
+                <b>Следующий платеж:</b> <span class="average">{{:data.time_to_next_pay}}</span>
+            </div>
+            <div class="itemContentSmall">
+                {{:helper.link('Меню переводов', null, {'choice' : "Меню переводов"}, null, null)}}
+                {{:helper.link('История переводов', null, {'choice' : "История переводов"}, null, null)}}
+                {{if data.boss}} {{:helper.link('Зарплата сотрудников', null, {'choice' : "Зарплата сотрудников"}, null, null)}} {{/if}}    
+            </div>
+        </div>
+    {{else data.mode == 71}} <!-- Show Transaction Menu -->
+        <div class="item"> 
+            <div class="statusDisplayRecords">
+                <table>
+                    <tr><td><span class="good">Номер счёта получателя:</span></td>
+                    <td><div class="itemContent">{{:helper.link(data.target_account_number, null, {'choice' : "target_acc_number"}, null, null)}}</div></td>
+                    <td><div class="itemContent">{{:helper.link('Список экипажа', null, {'choice' : "Показать список экипажа"}, null, null)}}</div></td>
+                    <td><div class="itemContent">{{:helper.link('Click', null, {'choice' : "Найти"}, null, null)}}</div></td></tr>
+
+                    <tr><td><span class="good">Величина перевода($):</span></td>
+                    <td><div class="itemContent">{{:helper.link(data.funds_amount, null, {'choice' : "funds_amount"}, null, null)}}</div></td></tr>
+
+                    <tr><td><span class="good">Назначение платежа:</span></td>
+                    <td><div class="itemContent">{{:helper.link(data.purpose, null, {'choice' : "purpose"}, null, null)}}</div></td></tr>
+                </table>
+                <div class="itemContent">{{:helper.link('Перевести', 'transferthick-e-w', {'choice' : "make_transfer"}, data.ready_to_send ? null : 'disabled', null)}}</div>
+            </div>
+        </div>
+    {{else data.mode == 72}} <!-- Show Transaction Log -->
+        <div class="item">
+            <div class="statusDisplayRecords">
+                <center><table class="pmon">
+                    <tr><th>Дата</th><th>Time</th><th>Цель</th><th>Назначение</th><th>Value</th><th>Source</th></tr>
+                    {{for data.trans_log}}
+                        <tr><td>{{:value.data}}</td><td>{{:value.time}}</td><td>{{:value.name}}</td><td>{{:value.purpose}}</td><td>{{:value.amount}}</td><td>{{:value.source}}</td></tr>
+                    {{/for}}
+                </table></center>
+            </div>
+        </div>
+    {{else data.mode == 73}}   <!-- Change Staff Salary -->
+        <div class="item">
+            <div class="statusDisplayRecords">
+                <center><table class="pmon">
+                    <tr><th>Имя</th><th>Должность</th><th>Зарплата</th></tr>
+                    {{for data.subordinate_staff}}
+                        <tr><td>{{:value.name}}</td><td>{{:value.rank}}</td><td>{{:value.salary}}</td>
+                        <td>{{:helper.link('Изменить зарплату', null, {'choice' : "Изменить зарплату", 'account' : value.acc_number}, null, null)}}</td></tr>
+                    {{/for}}
+                </table></center>
+            </div>
+        </div>
+    {{/if}}
+{{else}}
+    <div class="wholeScreen">
+        <br><br><br><br><br><br><br>Не найдено информации о владельце, проведите картой
+    </div>
+{{/if}}
