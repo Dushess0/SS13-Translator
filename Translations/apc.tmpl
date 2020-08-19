@@ -1,64 +1,64 @@
 <div class='notice'>
 	{{if data.siliconUser}}
 		<div class="itemContentSmall">
-			Interface Lock:
+			Панель управления:
 		</div>
 		<div class="itemContentFull">
-			{{:helper.link('Engaged', 'locked', {'toggleaccess' : 1}, data.locked ? 'selected' : null)}}{{:helper.link('Disengaged', 'unlocked', {'toggleaccess' : 1}, data.malfStatus >= 2 ? 'linkOff' : (data.locked ? null : 'selected'))}}
+			{{:helper.link('Заблокирована', 'locked', {'toggleaccess' : 1}, data.locked ? 'selected' : null)}}{{:helper.link('Разблокирована', 'unlocked', {'toggleaccess' : 1}, data.malfStatus >= 2 ? 'Отключена' : (data.locked ? null : 'selected'))}}
 		</div>
 		<div class="clearBoth"></div>
 	{{else}}
 		{{if data.locked}}
-			Swipe an ID card to unlock this interface
+			Проведите ID картой что бы разблокировать
 		{{else}}
-			Swipe an ID card to lock this interface
+			Проведите ID картой что бы заблокировать
 		{{/if}}
 	{{/if}}
 </div>
 
 <div style="min-width: 480px">
 
-	<h3>Power Status</h3>
+	<h3>Состояние питания</h3>
 
 	<div class="item">
 		<div class="itemLabel">
-			Main Breaker:
+			Главный рубильник:
 		</div>
 		<div class="itemContent">
 			{{if data.locked && !data.siliconUser}}
 				{{if data.isOperating}}
-					<span class='good'>On</span>
+					<span class='good'>Включен</span>
 				{{else}}
-					<span class='bad'>Off</span>
+					<span class='bad'>Выключен</span>
 				{{/if}}
 			{{else}}
-				{{:helper.link('On', 'power', {'breaker' : 1}, data.isOperating ? 'selected' : null)}}{{:helper.link('Off', 'close', {'breaker' : 1}, data.isOperating ? null : 'selected')}}
+				{{:helper.link('Включен', 'power', {'breaker' : 1}, data.isOperating ? 'selected' : null)}}{{:helper.link('Выключен', 'close', {'breaker' : 1}, data.isOperating ? null : 'selected')}}
 			{{/if}}
 		</div>
 	</div>
 
 	<div class="item">
 		<div class="itemLabel">
-			External Power:
+			Внешнее питание:
 		</div>
 		<div class="itemContent">
 			{{if data.externalPower == 2}}
-				<span class='good'>Good</span>
+				<span class='good'>Отлично</span>
 			{{else data.externalPower == 1}}
-				<span class='average'>Low</span>
+				<span class='average'>Низко</span>
 			{{else}}
-				<span class='bad'>None</span>
+				<span class='bad'>Отсутсвует</span>
 			{{/if}}
 		</div>
 	</div>
 
 	<div class="item">
 		<div class="itemLabel">
-			Power Cell:
+			Батарейка:
 		</div>
 		{{if data.powerCellStatus == null}}
 			<div class="itemContent bad">		
-				Power cell removed.
+				Батарейка отсутсвует.
 			</div>
 		{{else}}
 			
@@ -72,32 +72,32 @@
 	{{if data.powerCellStatus != null}}
 		<div class="item">
 			<div class="itemLabel">
-				Charge Mode:
+				Режим зарядки:
 			</div>
 			<div class="itemContent">
 				{{if data.locked && !data.siliconUser}}
 					{{if data.chargeMode}}
-						<span class='good'>Auto</span>
+						<span class='good'>Авто</span>
 					{{else}}
-						<span class='bad'>Off</span>
+						<span class='bad'>Выключено</span>
 					{{/if}}				
 				{{else}}
-					{{:helper.link('Auto', 'refresh', {'cmode' : 1}, data.chargeMode ? 'selected' : null)}}{{:helper.link('Off', 'close', {'cmode' : 1}, data.chargeMode ? null : 'selected')}}
+					{{:helper.link('Авто', 'refresh', {'cmode' : 1}, data.chargeMode ? 'selected' : null)}}{{:helper.link('Выключить', 'close', {'cmode' : 1}, data.chargeMode ? null : 'selected')}}
 				{{/if}}
 				&nbsp;
 				{{if data.chargingStatus > 1}}
-					[<span class='good'>Fully Charged</span>]
+					[<span class='good'>Полностью заряжен</span>]
 				{{else data.chargingStatus == 1}}
-					[<span class='average'>Charging</span>]
+					[<span class='average'>Заряжается</span>]
 				{{else}}
-					[<span class='bad'>Not Charging</span>]
+					[<span class='bad'>Не заряжается</span>]
 				{{/if}}
 			</div>
 		</div>
 	{{/if}}
 
 
-	<h3>Power Channels</h3>
+	<h3>Каналы питания</h3>
 
 	{{for data.powerChannels}}
 		<div class="item">
@@ -110,23 +110,23 @@
 			<div class="itemContent" style="width: 105px">
 				&nbsp;&nbsp;
 				{{if value.status <= 1}}
-					<span class='bad'>Off</span>
+					<span class='bad'>Выключен</span>
 				{{else value.status >= 2}}
-					<span class='good'>On</span>
+					<span class='good'>Включен</span>
 				{{/if}}
 				{{if data.locked}}
 					{{if value.status == 1 || value.status == 3}}
-						&nbsp;&nbsp;Auto
+						&nbsp;&nbsp;Авто
 					{{else}}
-						&nbsp;&nbsp;Manual
+						&nbsp;&nbsp;Ручное
 					{{/if}}		
 				{{/if}}
 			</div>
 			{{if !data.locked || data.siliconUser}}
 				<div class="itemContentFull">
-					{{:helper.link('Auto', 'refresh', value.topicParams.auto, (value.status == 1 || value.status == 3) ? 'selected' : null)}}
-					{{:helper.link('On', 'power', value.topicParams.on, (value.status == 2) ? 'selected' : null)}}
-					{{:helper.link('Off', 'close', value.topicParams.off, (value.status == 0) ? 'selected' : null)}}
+					{{:helper.link('Авто', 'refresh', value.topicParams.auto, (value.status == 1 || value.status == 3) ? 'selected' : null)}}
+					{{:helper.link('Включен', 'power', value.topicParams.on, (value.status == 2) ? 'selected' : null)}}
+					{{:helper.link('Выключен', 'close', value.topicParams.off, (value.status == 0) ? 'selected' : null)}}
 				</div>
 			{{/if}}
 		</div>
@@ -134,13 +134,13 @@
 
 	<div class="item" style="font-weight: bold">
 		<div class="itemLabel">
-			Total Load:
+			Нагрузка на сеть:
 		</div>
 		<div class="itemContent">
 			{{if data.totalCharging}}
-				{{:data.totalLoad}}W (+ {{:data.totalCharging}}W Charging)
+				{{:data.totalLoad}}Вт (+ {{:data.totalCharging}}Вт Заряжается)
 			{{else}}
-				{{:data.totalLoad}}W
+				{{:data.totalLoad}}Вт
 			{{/if}}
 		</div>
 	</div>
@@ -149,17 +149,17 @@
 
 	<div class="item">
 		<div class="itemLabel">
-			Cover Lock:
+			Заслонка:
 		</div>
 		<div class="itemContent">
 			{{if data.locked && !data.siliconUser}}
 				{{if data.coverLocked}}
-					<span class='good'>Engaged</span>
+					<span class='good'>Закрыта</span>
 				{{else}}
-					<span class='bad'>Disengaged</span>
+					<span class='bad'>Открыта</span>
 				{{/if}}
 			{{else}}
-				{{:helper.link('Engaged', 'locked', {'lock' : 1}, data.coverLocked ? 'selected' : null)}}{{:helper.link('Disengaged', 'unlocked', {'lock' : 1}, data.coverLocked ? null : 'selected')}}
+				{{:helper.link('Закрыта', 'locked', {'lock' : 1}, data.coverLocked ? 'selected' : null)}}{{:helper.link('Открыта', 'unlocked', {'lock' : 1}, data.coverLocked ? null : 'selected')}}
 			{{/if}}
 		</div>
 	</div>

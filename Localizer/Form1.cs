@@ -31,7 +31,16 @@ namespace Localizer
         private void Download(string folder, string file)
         {
             var webclient = new WebClient();
-            webclient.DownloadFile(downloadBase+ folder + file, file);
+            try
+            {
+                webclient.DownloadFile(downloadBase + folder + file, file);
+            }
+            catch (WebException)
+            {
+
+                this.label1.Text += "Ошибка скачивания: " + file;
+            }
+           
         }
         
 
@@ -44,6 +53,7 @@ namespace Localizer
             this.label1.Text = "Начата загрузка файлов\n";
             this.progressBar1.Minimum = 0;
             this.progressBar1.Maximum = files.Length;
+            this.progressBar1.Value = 0;
 
             var byondDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\BYOND\\cache";
             var cacheFolder = Directory.GetDirectories(byondDir).OrderByDescending(dir => Directory.GetLastWriteTime(dir)).First();
@@ -55,14 +65,16 @@ namespace Localizer
                 if (File.Exists(cacheFolder+"\\" + file))
                     File.Delete(cacheFolder+"\\" + file);
 
-                File.Move(file, cacheFolder+"\\" + file);
+                if (File.Exists(file))
+                   File.Move(file, cacheFolder+"\\" + file);
 
                 this.label1.Text += file + "\n";
 
                 this.progressBar1.Value++;
             }
             this.label1.Text += "Закончено\n";
-            
+
+           
             
             
            
@@ -80,6 +92,8 @@ namespace Localizer
 
 
         }
+
+ 
 
        
     }
