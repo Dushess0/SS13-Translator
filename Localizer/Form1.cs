@@ -93,6 +93,13 @@ namespace Localizer
 
         }
 
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+            this.button2.Enabled = true;
+        }
+
+   
+
  
 
        

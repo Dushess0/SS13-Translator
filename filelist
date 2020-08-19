@@ -7,7 +7,6 @@ air_alarm.tmpl
 alarm_monitor.tmpl
 apc.tmpl
 atmos_alert.tmpl
-atmos_control.tmpl
 botany_editor.tmpl
 botany_isolator.tmpl
 chem_dispenser.tmpl
