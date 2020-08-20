@@ -845,7 +845,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     </div>
                     <div class="itemContent">
                         <span class="average">
-                            {{:helper.link(data.records.mulebot.botstatus.load == null ? 'None (Unload)' : data.records.mulebot.botstatus.load + ' (Unload)', 'gear', {'radiomenu' : "1", 'op' : "unload"},data.records.mulebot.botstatus.load == null ? 'disabled' : null, null)}}
+                            {{:helper.link(data.records.mulebot.botstatus.load == null ? 'Пусто(Выгрузить)' : data.records.mulebot.botstatus.load + ' (Выгрузить)', 'gear', {'radiomenu' : "1", 'op' : "unload"},data.records.mulebot.botstatus.load == null ? 'disabled' : null, null)}}
                         </span>
                     </div>
                 </div>
@@ -877,7 +877,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 </div>
                 <div class="item">
                     <div class="itemLabel">
-                        <span class="good">Авто вовзращение:</span>
+                        <span class="good">Авто возврат домой:</span>
                     </div>
                     <div class="itemContent">
                        {{:helper.link(data.records.mulebot.botstatus.retn == 1 ? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН', 'gear', {'radiomenu' : "1", 'op' : data.records.mulebot.botstatus.retn==1 ? "retoff" : "reton"}, null, null)}}
@@ -885,7 +885,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 </div>
                 <div class="item">
                     <div class="itemLabel">
-                        <span class="good">Auto Pickup:</span>
+                        <span class="good">Авто Подбор:</span>
                     </div>
                     <div class="itemContent">
                         {{:helper.link(data.records.mulebot.botstatus.pick==1? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН', 'gear', {'radiomenu' : "1", 'op' : data.records.mulebot.botstatus.pick==1 ? "pickoff" : "pickon"}, null, null)}}
@@ -893,7 +893,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 </div>
                 <div class="item">
                     <div class="itemLabel">
-                        <span class="good">Functions:</span>
+                        <span class="good">Функции:</span>
                     </div>
                     <div class="itemContent">
                         {{:helper.link('Стоп', 'gear', {'radiomenu' : "1", 'op' : "stop"}, null, null)}}
