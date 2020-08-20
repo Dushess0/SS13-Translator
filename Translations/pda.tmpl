@@ -213,16 +213,16 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
 
 
     {{else data.mode == 2}} <!-- Messenger -->
-        <H2>SpaceMessenger V4.0.1</H2>
+        <H2>Космо-Мессенджер V4.0.1</H2>
         <div class="item">
             <div class="itemLabelNarrow">
-                <b>Messenger Functions</b>:
+                <b>Функции мессенджера</b>:
             </div>
             <div class ="itemContent">
-                {{:helper.link(data.message_silent==1 ? 'Ringer: Off' : 'Ringer: On', data.message_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Toggle Ringer"}, null, 'fixedLeftWide')}}
-                {{:helper.link(data.toff==1 ? 'Messenger: Off' : 'Messenger: On',data.toff==1 ? 'close':'check', {'choice' : "Toggle Messenger"}, null, 'fixedLeftWide')}}
-                {{:helper.link('Set Ringtone', 'comment', {'choice' : "Ringtone"}, null, 'fixedLeftWide')}}
-                {{:helper.link('Delete all Conversations', 'trash', {'choice' : "Clear", 'option' : "All"}, null, 'fixedLeftWider')}}
+                {{:helper.link(data.message_silent==1 ? 'Звонок: Выключен' : 'Звонок: Включен', data.message_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Toggle Ringer"}, null, 'fixedLeftWide')}}
+                {{:helper.link(data.toff==1 ? 'Мессенджер: Выключен' : 'Мессенджер: Включен',data.toff==1 ? 'close':'check', {'choice' : "Toggle Messenger"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Установить звонок', 'comment', {'choice' : "Ringtone"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Удалить все переписки', 'trash', {'choice' : "Clear", 'option' : "All"}, null, 'fixedLeftWider')}}
             </div>
         </div>
         {{if data.toff == 0}}
@@ -231,8 +231,8 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 {{if data.cartridge.charges}}
                     <div class="item">
                         <b>{{:data.cartridge.charges}}
-                        {{if data.cartridge.access.access_detonate_pda}} detonation charges left. {{/if}}
-                        {{if data.cartridge.access.access_clown || data.cartridge.access.access_mime}} viral files left. {{/if}}
+                        {{if data.cartridge.access.access_detonate_pda}} зарядов для подрыва осталось. {{/if}}
+                        {{if data.cartridge.access.access_clown || data.cartridge.access.access_mime}} вирусных файлов осталось. {{/if}}
                         </b>
                         <br><br>
                     </div>
@@ -240,21 +240,21 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
             {{/if}}
 
             {{if data.pda_count == 0}}
-                <b>No other PDAS located</b>
+                <b>Не обнаружено других ПДА</b>
             {{else}}
-                <H3>Current Conversations</H3>
+                <H3>Текущие Переписки</H3>
                 {{for data.convopdas}}
                     <div class="item">
-                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Select Conversation", 'convo' : value.Reference } , null, value.fixedLeftWider)}}
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Выбрать Переписку", 'convo' : value.Reference } , null, value.fixedLeftWider)}}
                         {{if data.cartridge}}
                             {{if data.cartridge.access.access_detonate_pda && value.Detonate}}
-                                {{:helper.link('*Detonate*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Подорвать*', 'radiation', {'choice' : "Подорвать", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                             {{if data.cartridge.access.access_clown}}
-                                {{:helper.link('*Отправить Virus*', 'star', {'choice' : "Отправить Honk", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Отправить ХОНК", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                             {{if data.cartridge.access.access_mime}}
-                                {{:helper.link('*Отправить Virus*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                         {{/if}}
                     </div>
@@ -262,11 +262,11 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <H3>Other PDAs</H3>
                 {{for data.pdas}}
                     <div class="item">
-                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Message", 'target' : value.Reference}, null, value.fixedLeftWider)}}
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Сообщение", 'target' : value.Reference}, null, value.fixedLeftWider)}}
                         {{if data.cartridge}}
                             {{if data.cartridge.access.access_detonate_pda && value.Detonate}} {{:helper.link('*Detonate*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
-                            {{if data.cartridge.access.access_clown}} {{:helper.link('*Отправить Virus*', 'star', {'choice' : "Отправить Honk", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
-                            {{if data.cartridge.access.access_mime}}  {{:helper.link('*Отправить Virus*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_clown}} {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Отправить ХОНК", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_mime}}  {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Отправить ТИШИНКУ", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
                         {{/if}}
                     </div>
                 {{/for}}
