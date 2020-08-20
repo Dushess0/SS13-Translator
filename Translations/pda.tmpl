@@ -58,7 +58,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
         <br>
         <div class="item">
             <div class="itemLabelNarrow">
-                    <b>Cartridge</b>:
+                    <b>Картридж</b>:
             </div>
             <div class="itemContent">
                 {{if data.cart_loaded==1}}
@@ -163,20 +163,20 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                         {{:helper.link('Сигналер', 'gear', {'choice' : "40"}, null, 'fixedLeftWide')}}
                     {{/if}}
                     {{if data.cartridge.access.access_reagent_scanner==1}}
-                        {{:helper.link(data.scanmode == 3 ? 'Выключить Сканнер Реагентов' : 'Включить Сканнер Реагентов', 'gear', {'choice' : "Сканирование реагентов"}, null, 'fixedLeftWider')}}
+                        {{:helper.link(data.scanmode == 3 ? 'Выключить Сканнер Реагентов' : 'Включить Сканнер Реагентов', 'gear', {'choice' : "Reagent Scan"}, null, 'fixedLeftWider')}}
                     {{/if}}
                     {{if data.cartridge.access.access_engine==1}}
-                        {{:helper.link(data.scanmode == 4 ? 'Выключить счётчик Гейгера' : 'Включить счётчик Гейгера', 'gear', {'choice' : "Счётчик Гейгера"}, null, 'fixedLeftWider')}}
+                        {{:helper.link(data.scanmode == 4 ? 'Выключить счётчик Гейгера' : 'Включить счётчик Гейгера', 'gear', {'choice' : "Halogen Counter"}, null, 'fixedLeftWider')}}
                     {{/if}}
                     {{if data.cartridge.access.access_atmos==1}}
-                        {{:helper.link(data.scanmode == 5 ? 'Выключить Сканнер Газов' : 'Включить Сканнер Газов', 'gear', {'choice' : "Сканирование газов"}, null, 'fixedLeftWide')}}
+                        {{:helper.link(data.scanmode == 5 ? 'Выключить Сканнер Газов' : 'Включить Сканнер Газов', 'gear', {'choice' : "Halogen Counter"}, null, 'fixedLeftWide')}}
                     {{/if}}
                     {{if data.cartridge.access.access_remote_door==1}}
-                        {{:helper.link('Переключить дверь', 'gear', {'choice' : "Переключить дверь"}, null, 'fixedLeftWide')}}
+                        {{:helper.link('Переключить дверь', 'gear', {'choice' : "Toggle Door"}, null, 'fixedLeftWide')}}
                     {{/if}}
                 {{/if}}
-                {{:helper.link('Atmospheric Scan', 'gear', {'choice' : "3"}, null, 'fixedLeftWide')}}
-                {{:helper.link(data.fon==1 ? 'Выключить Фонарик' : 'Включить Фонарик', 'lightbulb', {'choice' : "Фонарик"}, null,'fixedLeftWide')}}
+                {{:helper.link('Просканировать Атмосферу', 'gear', {'choice' : "3"}, null, 'fixedLeftWide')}}
+                {{:helper.link(data.fon==1 ? 'Выключить Фонарик' : 'Включить Фонарик', 'lightbulb', {'choice' : "Light"}, null,'fixedLeftWide')}}
             </div>
         </div>
         {{if data.pai}}
@@ -207,7 +207,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
         </div>
         <div class="item">
             <div class="itemLabel">
-                {{:helper.link('Редактировать записи', 'gear', {'choice' : "Редактировать"}, null, 'fixedLeft')}}
+                {{:helper.link('Редактировать записи', 'gear', {'choice' : "Edit"}, null, 'fixedLeft')}}
             </div>
         </div>
 
@@ -245,16 +245,16 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <H3>Текущие Переписки</H3>
                 {{for data.convopdas}}
                     <div class="item">
-                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Выбрать Переписку", 'convo' : value.Reference } , null, value.fixedLeftWider)}}
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Select Conversation", 'convo' : value.Reference } , null, value.fixedLeftWider)}}
                         {{if data.cartridge}}
                             {{if data.cartridge.access.access_detonate_pda && value.Detonate}}
-                                {{:helper.link('*Подорвать*', 'radiation', {'choice' : "Подорвать", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Подорвать*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                             {{if data.cartridge.access.access_clown}}
-                                {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Отправить ХОНК", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Send Honk", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                             {{if data.cartridge.access.access_mime}}
-                                {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Отправить Silence", 'target' : value.Reference}, null, 'fixedLeft')}}
+                                {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Send Silence", 'target' : value.Reference}, null, 'fixedLeft')}}
                             {{/if}}
                         {{/if}}
                     </div>
@@ -262,11 +262,11 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <H3>Other PDAs</H3>
                 {{for data.pdas}}
                     <div class="item">
-                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Сообщение", 'target' : value.Reference}, null, value.fixedLeftWider)}}
+                        {{:helper.link(value.Name, 'circle-arrow-s', {'choice' : "Message", 'target' : value.Reference}, null, value.fixedLeftWider)}}
                         {{if data.cartridge}}
                             {{if data.cartridge.access.access_detonate_pda && value.Detonate}} {{:helper.link('*Detonate*', 'radiation', {'choice' : "Detonate", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
-                            {{if data.cartridge.access.access_clown}} {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Отправить ХОНК", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
-                            {{if data.cartridge.access.access_mime}}  {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Отправить ТИШИНКУ", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_clown}} {{:helper.link('*Отправить Вирус*', 'star', {'choice' : "Send Honk", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
+                            {{if data.cartridge.access.access_mime}}  {{:helper.link('*Отправить Вирус*', 'circle-arrow-s', {'choice' : "Send Silence", 'target' : value.Reference}, null, 'fixedLeft')}}  {{/if}}
                         {{/if}}
                     </div>
                 {{/for}}
@@ -281,7 +281,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <b>Функции мессенджера</b>:
             </div>
             <div class ="itemContent">
-                {{:helper.link('Удалить переписку', 'trash', {'choice' : "Очистить", 'option' : "Convo"}, null, 'fixedLeftWide')}}
+                {{:helper.link('Удалить переписку', 'trash', {'choice' : "Clear", 'option' : "Convo"}, null, 'fixedLeftWide')}}
             </div>
         </div>
         <br>
@@ -302,7 +302,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 </div>
             </div>
         </div>
-        {{:helper.link('Ответить', 'comment', {'choice' : "Написать", 'target': data.active_conversation}, null, 'fixedLeft')}}
+        {{:helper.link('Ответить', 'comment', {'choice' : "Message", 'target': data.active_conversation}, null, 'fixedLeft')}}
 
 
 	{{else data.mode== 41}} <!-- Manifest uses cached data so we only use nanowriter when shit changes.-->
@@ -312,10 +312,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="command">Командный состав</th></tr>
                     {{for data.cached["heads"]}}
                         {{if value.rank == "Captain"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -324,10 +324,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="sec">Служба Безопасности</th></tr>
                     {{for data.cached["sec"]}}
                         {{if value.rank == "Head of Security"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -336,10 +336,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="eng">Инженеры</th></tr>
                     {{for data.cached["eng"]}}
                         {{if value.rank == "Chief Engineer"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -348,10 +348,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="med">Медики</th></tr>
                     {{for data.cached["med"]}}
                         {{if value.rank == "Chief Medical Officer"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -360,10 +360,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="sci">Ученые</th></tr>
                     {{for data.cached["sci"]}}
                         {{if value.rank == "Research Director"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -372,10 +372,10 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th colspan="4" class="civ">Гражданские</th></tr>
                     {{for data.cached["civ"]}}
                         {{if value.rank == "Head of Personnel"}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="good">{{:value.name}}</span></td><td><span class="good">{{:value.rank}}</span></td><td><span class="good">{{:value.active}}</span></td></tr>
                         {{else}}
-                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                            <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                             <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                         {{/if}}
                     {{/for}}
@@ -383,7 +383,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 {{if data.cached.misc.length}}
                     <tr><th colspan="4" class="misc">Разное</th></tr>
                     {{for data.cached["misc"]}}
-                        <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Отправить Деньги", 'account' : value.account}, null, null)}}</td>
+                        <tr><td>{{:helper.link('Отправить Деньги', null, {'choice' : "Send Money", 'account' : value.account}, null, null)}}</td>
                         <td><span class="average">{{:value.name}}</span></td><td><span class="average">{{:value.rank}}</span></td><td><span class="average">{{:value.active}}</span></td></tr>
                     {{/for}}
                 {{/if}}
@@ -461,11 +461,11 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 {{:data.records.signal_freq}}
                 <br>
                 &nbsp;
-                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "-10"}, null, null)}}&nbsp;
-                {{:helper.link('-.2', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "-2"}, null, null)}}&nbsp;
+                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Signal Frequency", 'sfreq' : "-10"}, null, null)}}&nbsp;
+                {{:helper.link('-.2', null, {'cartmenu' : "1", 'choice' : "Signal Frequency", 'sfreq' : "-2"}, null, null)}}&nbsp;
 
-                {{:helper.link('+.2', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "2"}, null, null)}}&nbsp;
-                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Частота сигнала", 'sfreq' : "10"}, null, null)}}
+                {{:helper.link('+.2', null, {'cartmenu' : "1", 'choice' : "Signal Frequency", 'sfreq' : "2"}, null, null)}}&nbsp;
+                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Signal Frequency", 'sfreq' : "10"}, null, null)}}
             </div>
         </div>
         <br>
@@ -478,14 +478,14 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <span class="average">
                     {{:data.records.signal_code}}<br>
                 </span>
-                {{:helper.link('-5', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "-5"}, null, null)}}
-                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "-1"}, null, null)}}
-                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "1"}, null, null)}}
-                {{:helper.link('+5', null, {'cartmenu' : "1", 'choice' : "Код сигнала", 'scode' : "5"}, null, null)}}
+                {{:helper.link('-5', null, {'cartmenu' : "1", 'choice' : "Signal Code", 'scode' : "-5"}, null, null)}}
+                {{:helper.link('-1', null, {'cartmenu' : "1", 'choice' : "Signal Code", 'scode' : "-1"}, null, null)}}
+                {{:helper.link('+1', null, {'cartmenu' : "1", 'choice' : "Signal Code", 'scode' : "1"}, null, null)}}
+                {{:helper.link('+5', null, {'cartmenu' : "1", 'choice' : "Signal Code", 'scode' : "5"}, null, null)}}
             </div>
         </div>
         <div class="item">
-            {{:helper.link('Отправить Сигнал', 'radiation', {'cartmenu' : "1", 'choice' : "Отправить Сигнал"}, null, null)}}
+            {{:helper.link('Отправить Сигнал', 'radiation', {'cartmenu' : "1", 'choice' : "Send Signal"}, null, null)}}
         </div>
 
 
@@ -965,7 +965,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <b>Функции</b>:
             </div>
             <div class ="itemContent">
-					{{:helper.link(data.news_silent==1 ? 'Выключить звонок' : 'Включить звонок', data.news_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Включить новости"}, null, 'fixedLeftWide')}}
+					{{:helper.link(data.news_silent==1 ? 'Выключить звонок' : 'Включить звонок', data.news_silent==1 ? 'volume-off' : 'volume-on', {'choice' : "Toggle News"}, null, 'fixedLeftWide')}}
                 {{:helper.link('Выставить рингтон новостей', 'comment', {'choice' : "Newstone"}, null, 'fixedLeftWide')}}
             </div>
         </div>
@@ -978,9 +978,9 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
             <div class="itemContent">
                 {{for data.feedChannels}}
                     {{if value.censored}}
-						{{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Выбрать Ленту", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWiderRed')}}
+						{{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Select Feed", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWiderRed')}}
                     {{else}}
-                        {{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Выбрать Ленту", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWider')}}
+                        {{:helper.link(value.name, 'circle-arrow-s', {'choice' : "Select Feed", 'feed' : value.feed, 'name' : value.name } , null, 'fixedLeftWider')}}
                     {{/if}}
                 {{empty}}
                     <I>Не найдено активных каналов...</I>
@@ -1033,9 +1033,9 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <b>Следующий платеж:</b> <span class="average">{{:data.time_to_next_pay}}</span>
             </div>
             <div class="itemContentSmall">
-                {{:helper.link('Меню переводов', null, {'choice' : "Меню переводов"}, null, null)}}
-                {{:helper.link('История переводов', null, {'choice' : "История переводов"}, null, null)}}
-                {{if data.boss}} {{:helper.link('Зарплата сотрудников', null, {'choice' : "Зарплата сотрудников"}, null, null)}} {{/if}}    
+                {{:helper.link('Меню переводов', null, {'choice' : "Transaction Menu"}, null, null)}}
+                {{:helper.link('История переводов', null, {'choice' : "Transaction Log"}, null, null)}}
+                {{if data.boss}} {{:helper.link('Зарплата сотрудников', null, {'choice' : "Staff Salary"}, null, null)}} {{/if}}    
             </div>
         </div>
     {{else data.mode == 71}} <!-- Show Transaction Menu -->
@@ -1044,8 +1044,8 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                 <table>
                     <tr><td><span class="good">Номер счёта получателя:</span></td>
                     <td><div class="itemContent">{{:helper.link(data.target_account_number, null, {'choice' : "target_acc_number"}, null, null)}}</div></td>
-                    <td><div class="itemContent">{{:helper.link('Список экипажа', null, {'choice' : "Показать список экипажа"}, null, null)}}</div></td>
-                    <td><div class="itemContent">{{:helper.link('Click', null, {'choice' : "Найти"}, null, null)}}</div></td></tr>
+                    <td><div class="itemContent">{{:helper.link('Список экипажа', null, {'choice' : "Show Manifest"}, null, null)}}</div></td>
+                    <td><div class="itemContent">{{:helper.link('Найти', null, {'choice' : "Look for"}, null, null)}}</div></td></tr>
 
                     <tr><td><span class="good">Величина перевода($):</span></td>
                     <td><div class="itemContent">{{:helper.link(data.funds_amount, null, {'choice' : "funds_amount"}, null, null)}}</div></td></tr>
@@ -1060,7 +1060,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
         <div class="item">
             <div class="statusDisplayRecords">
                 <center><table class="pmon">
-                    <tr><th>Дата</th><th>Time</th><th>Цель</th><th>Назначение</th><th>Value</th><th>Source</th></tr>
+                    <tr><th>Дата</th><th>Time</th><th>Цель</th><th>Назначение</th><th>Количество</th><th>Источник</th></tr>
                     {{for data.trans_log}}
                         <tr><td>{{:value.data}}</td><td>{{:value.time}}</td><td>{{:value.name}}</td><td>{{:value.purpose}}</td><td>{{:value.amount}}</td><td>{{:value.source}}</td></tr>
                     {{/for}}
@@ -1074,7 +1074,7 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
                     <tr><th>Имя</th><th>Должность</th><th>Зарплата</th></tr>
                     {{for data.subordinate_staff}}
                         <tr><td>{{:value.name}}</td><td>{{:value.rank}}</td><td>{{:value.salary}}</td>
-                        <td>{{:helper.link('Изменить зарплату', null, {'choice' : "Изменить зарплату", 'account' : value.acc_number}, null, null)}}</td></tr>
+                        <td>{{:helper.link('Изменить зарплату', null, {'choice' : "Change Salary", 'account' : value.acc_number}, null, null)}}</td></tr>
                     {{/for}}
                 </table></center>
             </div>
